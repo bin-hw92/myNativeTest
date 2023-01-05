@@ -1,49 +1,69 @@
 import { useState } from "react";
-import { Button, StyleSheet, View } from "react-native";
+import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Counter from "../components/Counter";
 import QRCodeScanner from "../components/QRCodeScanner";
+import QRView from "../components/QRView";
+import TodoContainer from "./TodoContainer";
 
 
 const MainContainer = () => {
   const [state, setState] = useState(0);
   const [count, setCount] = useState(0);
+  const [token, setToken] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
 
   const onIncrease = () => setCount(count + 1);
   const onDecrease = () => setCount(count - 1);
+  const onReset = () => setCount(0);
+
+  const onBarCodeRead = (event) => {
+    setIsOpen(true);
+    setToken(event.nativeEvent.codeStringValue);
+  };
 
   return (
     <>
     {state === 0 && 
     <View style={styles.wrap}>
-      <Button style={styles.button} title="QR Reader" onPress={() => setState(1)} />
-      <Button style={styles.button} title="Counter" onPress={() => setState(2)} />
-      <Button style={styles.button} title="할일 목록" onPress={() => setState(3)} />
+      <TouchableOpacity style={styles.buttonStyle} onPress={() => setState(1)} >
+        <Text style={{color: '#ffffff'}}>QR Reader</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.buttonStyle} onPress={() => setState(2)} >
+        <Text style={{color: '#ffffff'}}>Counter</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.buttonStyle} onPress={() => setState(3)} >
+        <Text style={{color: '#ffffff'}}>할일 목록</Text>
+      </TouchableOpacity>
     </View>
     }
     {state === 1 && 
     <View>
-      <Button style={styles.button} title="Main" onPress={() => setState(0)} />
-      <QRCodeScanner />
+      <Button title="Main" onPress={() => setState(0)} />
+      {!isOpen? 
+        <QRCodeScanner onBarCodeRead={onBarCodeRead} /> : 
+        <QRView   
+          isOpen={isOpen}
+          token={token}
+          setIsOpen={setIsOpen}
+        />
+      }
     </View>
     }
     {state === 2 && 
     <View style={styles.wrap}>
-      <Button style={styles.button} title="Main" onPress={() => setState(0)} />
+      <Button title="Main" onPress={() => setState(0)} />
       <Counter 
         count={count}
         onIncrease={onIncrease}
         onDecrease={onDecrease}
+        onReset={onReset}
       />
     </View>
     }
     {state === 3 && 
     <View style={styles.wrap}>
-      <Button style={styles.button} title="Main" onPress={() => setState(0)} />
-      <Counter 
-        count={count}
-        onIncrease={onIncrease}
-        onDecrease={onDecrease}
-      />
+      <Button title="Main" onPress={() => setState(0)} />
+      <TodoContainer />
     </View>
     }
     </>
@@ -58,8 +78,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: "#eaeaea"
   },
-  button: {
-    marginVertical: 10,
+  buttonStyle: {
+    marginVertical: 15,
+    width: '100%',
+    height: 60,
+    backgroundColor: '#2196f3',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
