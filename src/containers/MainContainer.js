@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Counter from "../components/Counter";
 import QRCodeScanner from "../components/QRCodeScanner";
 import QRView from "../components/QRView";
 import TodoContainer from "./TodoContainer";
+import todosStorage from "../lib/todosStorage";
 
 
 const MainContainer = () => {
@@ -11,14 +12,38 @@ const MainContainer = () => {
   const [count, setCount] = useState(0);
   const [token, setToken] = useState('');
   const [isOpen, setIsOpen] = useState(false);
+  const [scaned, setScaned] = useState(true);
 
   const onIncrease = () => setCount(count + 1);
   const onDecrease = () => setCount(count - 1);
   const onReset = () => setCount(0);
 
-  const onBarCodeRead = (event) => {
-    setIsOpen(true);
-    setToken(event.nativeEvent.codeStringValue);
+  const onBarCodeRead = async(event) => {
+    const event_token = event.nativeEvent.codeStringValue.split('@');
+    if(event_token.length === 2){
+      if(event_token[0] === 'Bearer'){
+        try {
+          if (!scaned) return;
+          setScaned(false);
+          await todosStorage.set('api_key', event_token[1]);
+
+          Alert.alert(`로그인`, '로그인 토큰이 저장되었습니다.', [
+            { text: "OK", onPress: () => setScaned(true) },
+          ]);
+          return;
+        } catch (error) {
+          throw new Error('Failed to load todos');
+        }
+      }
+      setIsOpen(true);
+      setToken(event.nativeEvent.codeStringValue);
+    }else{
+      if (!scaned) return;
+      setScaned(false);
+      Alert.alert(`QR Code`,event.nativeEvent.codeStringValue, [
+        { text: "OK", onPress: () => setScaned(true) },
+      ]);
+    }
   };
 
   return (
@@ -37,10 +62,12 @@ const MainContainer = () => {
     </View>
     }
     {state === 1 && 
-    <View>
+    <View style={styles.wrap2}>
       <Button title="Main" onPress={() => setState(0)} />
-      {!isOpen? 
-        <QRCodeScanner onBarCodeRead={onBarCodeRead} /> : 
+      {!isOpen && scaned &&
+        <QRCodeScanner onBarCodeRead={onBarCodeRead} />
+      }
+      {isOpen && 
         <QRView   
           isOpen={isOpen}
           token={token}
@@ -77,6 +104,9 @@ const styles = StyleSheet.create({
     padding: 24,
     justifyContent: 'center',
     backgroundColor: "#eaeaea"
+  },
+  wrap2: {
+    flex: 1,
   },
   buttonStyle: {
     marginVertical: 15,

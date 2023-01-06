@@ -1,8 +1,8 @@
-import React, { useRef } from "react";
+import AsyncStorage from "@react-native-community/async-storage";
+import React, { useEffect, useRef } from "react";
 import {
   Alert,
   Dimensions,
-  SafeAreaView,
   StyleSheet,
   View,
 } from "react-native";
@@ -11,11 +11,19 @@ import { CameraScreen, CameraType } from "react-native-camera-kit";
 const QRCodeScanner = ({onBarCodeRead}) => {
   const ref = useRef(null);
 
+  /* const clearAll = async () => {
+    try {
+     await AsyncStorage.clear(); 
+    } catch (e) {
+      
+    }
+  };
 
-
+  useEffect(() => {
+    clearAll();
+  },[]); */
 
   return (
-    <SafeAreaView>
       <View style={styles.container}>
         <CameraScreen
           style={styles.scanner}
@@ -30,7 +38,6 @@ const QRCodeScanner = ({onBarCodeRead}) => {
           onReadCode={onBarCodeRead}
         />
       </View>
-    </SafeAreaView>
   );
 };
 
