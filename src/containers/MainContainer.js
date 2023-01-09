@@ -1,10 +1,11 @@
-import { useState } from "react";
-import { Alert, Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useCallback, useState } from "react";
+import { Alert, Button, Linking, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Counter from "../components/Counter";
 import QRCodeScanner from "../components/QRCodeScanner";
 import QRView from "../components/QRView";
 import TodoContainer from "./TodoContainer";
 import todosStorage from "../lib/todosStorage";
+import Dialog from "react-native-dialog";
 
 
 const MainContainer = () => {
@@ -13,6 +14,7 @@ const MainContainer = () => {
   const [token, setToken] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [scaned, setScaned] = useState(true);
+  const [scanedTxt, setScanedTxt] = useState('');
 
   const onIncrease = () => setCount(count + 1);
   const onDecrease = () => setCount(count - 1);
@@ -27,9 +29,7 @@ const MainContainer = () => {
           setScaned(false);
           await todosStorage.set('api_key', event_token[1]);
 
-          Alert.alert(`로그인`, '로그인 토큰이 저장되었습니다.', [
-            { text: "OK", onPress: () => setScaned(true) },
-          ]);
+          setScanedTxt('로그인 토큰이 저장되었습니다.');
           return;
         } catch (error) {
           throw new Error('Failed to load todos');
@@ -40,11 +40,30 @@ const MainContainer = () => {
     }else{
       if (!scaned) return;
       setScaned(false);
-      Alert.alert(`QR Code`,event.nativeEvent.codeStringValue, [
-        { text: "OK", onPress: () => setScaned(true) },
-      ]);
+      setScanedTxt(event.nativeEvent.codeStringValue);
     }
   };
+
+  const OpenLink = ({url, children}) => {
+    const handlePress = useCallback(async () => {
+      const supported = await Linking.canOpenURL('https://naver.com');
+  
+      if (supported) {
+        await Linking.openURL(url);
+      } else {   
+        if (url.indexOf('http') === 0) {
+          await Linking.openURL(url);
+        }
+      }
+    }, [url]);
+  
+    return <Text style={url.indexOf('http') === 0? styles.link : ''} onPress={handlePress}>{children}</Text>;
+  }
+
+  const handleCancel = () => {
+    setScaned(true);
+    setScanedTxt('');
+  }
 
   return (
     <>
@@ -73,6 +92,16 @@ const MainContainer = () => {
           token={token}
           setIsOpen={setIsOpen}
         />
+      }
+      {!scaned && 
+        <View style={styles.wrap2}>
+          <Dialog.Container visible={true}>
+            <Dialog.Description>
+              <OpenLink url={scanedTxt}>{scanedTxt}</OpenLink>
+            </Dialog.Description>
+            <Dialog.Button label="Cancel" onPress={handleCancel} />
+          </Dialog.Container>
+        </View>
       }
     </View>
     }
@@ -116,6 +145,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  link: {
+    textDecorationLine: 'underline',
+  }
 });
 
 export default MainContainer;

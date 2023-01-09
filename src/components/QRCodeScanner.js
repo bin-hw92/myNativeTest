@@ -11,18 +11,6 @@ import { CameraScreen, CameraType } from "react-native-camera-kit";
 const QRCodeScanner = ({onBarCodeRead}) => {
   const ref = useRef(null);
 
-  /* const clearAll = async () => {
-    try {
-     await AsyncStorage.clear(); 
-    } catch (e) {
-      
-    }
-  };
-
-  useEffect(() => {
-    clearAll();
-  },[]); */
-
   return (
       <View style={styles.container}>
         <CameraScreen

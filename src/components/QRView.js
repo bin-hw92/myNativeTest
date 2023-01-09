@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-community/async-storage";
 import { useEffect, useState } from "react";
 import { Alert, Button, StyleSheet, Text, View } from "react-native";
 import * as Api from "../api/booking";
@@ -15,7 +16,6 @@ const QRView = ({
       const header_token = await todosStorage.get('api_key');
       const res = await Api.selectBooking({token, header_token});
       setBookingItem(res?.data);
-      console.log(res?.data);
     } catch (error) {
       const message = `${error?.response?.data?.code}:${error?.response?.data?.message}`;
       Alert.alert('Error', message, [
@@ -24,9 +24,14 @@ const QRView = ({
     }
   };
 
-  const handleReset = () => {
-    setIsOpen(false);
-    setBookingItem({});
+  const handleReset = async() => {
+    try {
+      await AsyncStorage.clear(); 
+      await setIsOpen(false);
+      await setBookingItem({});
+     } catch (e) {
+       console.log(e);
+     }
   }
 
   useEffect(() => {
@@ -45,7 +50,7 @@ const QRView = ({
         <Text>예약자명:{bookingItem?.user?.name}</Text>
         <Text>객실:{bookingItem?.room?.name}</Text>
       </View>
-      <Button title="초기화" onPress={handleReset} />
+      <Button title="초기화" onPress={() => handleReset()} />
     </View>
   );
 };
