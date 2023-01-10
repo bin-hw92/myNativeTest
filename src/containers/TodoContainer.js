@@ -10,11 +10,7 @@ import todosStorage from '../lib/todosStorage';
 const TodoContainer = () => {
   const today = new Date();
 
-  const [todos, setTodos] = useState([
-    {id: 1, text: '작업환경 설정', done: true},
-    {id: 2, text: '리액트 네이티브 기초 공부', done: false},
-    {id: 3, text: '투두리스트 만들어보기', done: false},
-  ]);
+  const [todos, setTodos] = useState([]);
 
   const onInsert = (text) => {
     const nextId = todos.length > 0? Math.max(...todos.map(todo => todo.id)) + 1 : 1;
@@ -38,13 +34,13 @@ const TodoContainer = () => {
   };
 
   useEffect(() => {
-    todosStorage.get()
+    todosStorage.get('todos')
                 .then(setTodos)
                 .catch(console.error);
   },[]);
 
   useEffect(() => {
-    todosStorage.set(todos).catch(console.error);
+    todosStorage.set('todos', todos).catch(console.error);
   },[todos]);
 
   return (

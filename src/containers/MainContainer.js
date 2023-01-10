@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { Alert, Button, Linking, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Button, Linking, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Counter from "../components/Counter";
 import QRCodeScanner from "../components/QRCodeScanner";
 import QRView from "../components/QRView";

@@ -27,8 +27,8 @@ const QRView = ({
   const handleReset = async() => {
     try {
       await AsyncStorage.clear(); 
-      await setIsOpen(false);
-      await setBookingItem({});
+      setIsOpen(false);
+      setBookingItem({});
      } catch (e) {
        console.log(e);
      }
@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   bookingTxt: {
+    fontSize: 20,
     paddingHorizontal: 10,
   },
   bookingTxt2: {

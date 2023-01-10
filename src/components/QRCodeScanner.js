@@ -1,7 +1,6 @@
 import AsyncStorage from "@react-native-community/async-storage";
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import {
-  Alert,
   Dimensions,
   StyleSheet,
   View,
