@@ -1,4 +1,3 @@
-import AsyncStorage from "@react-native-community/async-storage";
 import React, { useRef } from "react";
 import {
   Dimensions,

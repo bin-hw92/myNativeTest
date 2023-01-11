@@ -1,5 +1,6 @@
+import { addDays } from 'date-fns';
 import React, { useEffect, useState } from 'react';
-import {KeyboardAvoidingView, StyleSheet} from 'react-native';
+import {Button, KeyboardAvoidingView, StyleSheet} from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import AddTodo from '../components/AddTodo';
 import DateHead from '../components/DateHead';
@@ -7,8 +8,8 @@ import Empty from '../components/Empty';
 import TodoList from '../components/TodoList';
 import todosStorage from '../lib/todosStorage';
 
-const TodoContainer = () => {
-  const today = new Date();
+const TodoContainer = ({route, navigation}) => {
+  const [today, setToday] = useState(new Date());
 
   const [todos, setTodos] = useState([]);
 
@@ -33,15 +34,40 @@ const TodoContainer = () => {
     setTodos(nextTodos);
   };
 
+  const onDate = (num) => {
+    if(num === 1){
+      setToday(addDays(today, 1));
+    }
+    if(num === -1){
+      setToday(addDays(today, -1));
+    }
+  }
+
   useEffect(() => {
-    todosStorage.get('todos')
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1;
+    const day = today.getDate();
+    todosStorage.get(`${year}.${month}.${day}-todos`)
                 .then(setTodos)
-                .catch(console.error);
+                .catch(() => setTodos([]));
   },[]);
 
   useEffect(() => {
-    todosStorage.set('todos', todos).catch(console.error);
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1;
+    const day = today.getDate();
+    todosStorage.set(`${year}.${month}.${day}-todos`, todos).catch(console.error);
   },[todos]);
+
+  useEffect(() => {
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1;
+    const day = today.getDate();
+
+    todosStorage.get(`${year}.${month}.${day}-todos`)
+                .then(setTodos)
+                .catch(() => setTodos([]));
+  },[today]);
 
   return (
     <SafeAreaProvider>
@@ -50,7 +76,7 @@ const TodoContainer = () => {
           behavior={Platform.OS === 'ios'? 'padding' : undefined}
           style={styles.avoid}
         >
-          <DateHead date={today}/>
+          <DateHead date={today} onDate={onDate} />
           {todos.length === 0 ? (
             <Empty />
           ):(
@@ -72,5 +98,4 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
-
 export default TodoContainer;

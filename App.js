@@ -1,13 +1,49 @@
 import React, { useState } from 'react';
 import {View, StyleSheet} from 'react-native';
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MainContainer from './src/containers/MainContainer';
+import QrCodeContainer from './src/containers/QrCodeContainer';
+import CounterContainer from './src/containers/CounterContainer';
+import TodoContainer from './src/containers/TodoContainer';
+
+const Stack = createNativeStackNavigator();
 
 const App = () => {
   
   return (
-      <View style={styles.wrap}>
-        <MainContainer />
-      </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen 
+          name="Home" 
+          component={MainContainer} 
+          options={{
+            title: '홈',
+          }}
+        />
+        <Stack.Screen 
+          name="Qrcode" 
+          component={QrCodeContainer}
+          options={{
+            title: 'QR Reader',
+          }}
+        />
+        <Stack.Screen 
+          name="Counter" 
+          component={CounterContainer} 
+          options={{
+            title: 'Counter'
+          }}
+        />
+        <Stack.Screen 
+          name="TodoList" 
+          component={TodoContainer}
+          options={{
+            title: '할일 목록'
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
