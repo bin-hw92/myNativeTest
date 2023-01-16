@@ -45,6 +45,7 @@ const QrCodeContainer = ({route, navigation}) => {
       } else {   
         if (url.indexOf('http') === 0) {
           await Linking.openURL(url);
+          handleCancel();
         }
       }
     }, [url]);
@@ -71,7 +72,7 @@ const QrCodeContainer = ({route, navigation}) => {
       }
       {!scaned && 
         <View style={styles.wrap2}>
-          <Dialog.Container visible={true}>
+          <Dialog.Container visible={true} onRequestClose={handleCancel} onBackdropPress={handleCancel}>
             <Dialog.Description>
               <OpenLink url={scanedTxt}>{scanedTxt}</OpenLink>
             </Dialog.Description>
