@@ -5,10 +5,12 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import RandomInput from '../components/RandomInput';
 import RandomList from '../components/RandomList';
 import Dialog from 'react-native-dialog';
+import Spin from '../components/Spin';
 
 const RandomContainer = ({route, navigation}) => {
   const [randomItems, setRandomItems] = useState([]);
   const [modalFlag, setModalFlag] = useState(false);
+  const [spinFlag, setSpinFlag] = useState(false);
   const [result, setResult] = useState('');
 
   const onInsert = (text) => {
@@ -26,7 +28,11 @@ const RandomContainer = ({route, navigation}) => {
     const ran = Math.floor(Math.random() * len)+1;
     const answer = randomItems.filter(item => item.id === ran);
     setResult(answer[0].text);
-    setModalFlag(true);
+    setSpinFlag(true);
+    setTimeout(() => {
+      setModalFlag(true);
+      setSpinFlag(false);
+    }, 1000);
   }
 
   const onReset = () => {
@@ -69,6 +75,7 @@ const RandomContainer = ({route, navigation}) => {
             </Dialog.Container>
           </View>
         }
+        {spinFlag && <Spin />}
       </SafeAreaView>
     </SafeAreaProvider>
   );

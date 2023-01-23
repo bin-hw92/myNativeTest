@@ -7,6 +7,7 @@ import QrCodeContainer from './src/containers/QrCodeContainer';
 import CounterContainer from './src/containers/CounterContainer';
 import TodoContainer from './src/containers/TodoContainer';
 import RandomContainer from './src/containers/RandomContainer';
+import Spin from './src/components/Spin';
 
 const Stack = createNativeStackNavigator();
 
