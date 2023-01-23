@@ -6,6 +6,7 @@ import MainContainer from './src/containers/MainContainer';
 import QrCodeContainer from './src/containers/QrCodeContainer';
 import CounterContainer from './src/containers/CounterContainer';
 import TodoContainer from './src/containers/TodoContainer';
+import RandomContainer from './src/containers/RandomContainer';
 
 const Stack = createNativeStackNavigator();
 
@@ -40,6 +41,13 @@ const App = () => {
           component={TodoContainer}
           options={{
             title: '할일 목록'
+          }}
+        />
+        <Stack.Screen 
+          name="Random" 
+          component={RandomContainer}
+          options={{
+            title: '랜덤 뽑기'
           }}
         />
       </Stack.Navigator>

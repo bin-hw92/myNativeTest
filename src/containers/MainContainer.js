@@ -15,6 +15,9 @@ const MainContainer = ({route, navigation}) => {
       <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.push('TodoList')} >
         <Text style={{color: '#ffffff'}}>할일 목록</Text>
       </TouchableOpacity>
+      <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.push('Random')} >
+        <Text style={{color: '#ffffff'}}>랜덤 뽑기</Text>
+      </TouchableOpacity>
     </View>
     </>
   )
