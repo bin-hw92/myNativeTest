@@ -1,3 +1,7 @@
+
+
+https://user-images.githubusercontent.com/45866008/213998446-6db9f511-3d46-4e65-b7be-d619df424e42.mp4
+
 # myNativeTest
  
 - 현재 앱 개발 목록
@@ -14,11 +18,10 @@ https://user-images.githubusercontent.com/45866008/213962216-88bf66e0-ee07-4ccc-
   - TodoList - 날짜별 할일을 볼 수 있는 앱
 
 
-https://user-images.githubusercontent.com/45866008/213962218-367bec8a-65d2-464e-b38c-0b1e59a67224.mp4
+https://user-images.githubusercontent.com/45866008/213962220-f37a2644-e298-4c40-b598-ba8b3aaba355.mp4
 
 
   - Random - 랜덤뽑기 (등록한 내용 중 한개를 랜덤으로 뽑아 줌)
 
 
-https://user-images.githubusercontent.com/45866008/213962220-f37a2644-e298-4c40-b598-ba8b3aaba355.mp4
 
