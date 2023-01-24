@@ -5,7 +5,7 @@
 - 현재 앱 개발 목록
   - QRCode Reader - QR 인식용 (회사 내부 정보 확인 + 일반 qr 인식 시 링크용인지 아닌지에 따라 팝업이 조금 다름)
 
-https://user-images.githubusercontent.com/45866008/213999123-976d4d65-ddd1-407a-82f3-ddc6d5566b34.mp4
+https://user-images.githubusercontent.com/45866008/214284505-d76a2fe0-bf03-4007-9bce-86935dd2657c.mp4
 
   - Counter - 개수기용
 
