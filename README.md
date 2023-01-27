@@ -1,7 +1,7 @@
 
 
 # myNativeTest
-react-native, react-native-camera-kit, asyncStorage, dialog
+사용 기술: react-native, react-native-camera-kit, asyncStorage, dialog
  
 - 현재 앱 개발 목록
   - QRCode Reader - QR 인식용 (회사 내부 정보 확인 + 일반 qr 인식 시 링크용인지 아닌지에 따라 팝업이 조금 다름)
